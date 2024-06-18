@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
-
 
 @Component
 @RequiredArgsConstructor
