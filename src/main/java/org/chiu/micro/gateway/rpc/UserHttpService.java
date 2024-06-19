@@ -18,8 +18,8 @@ public interface UserHttpService {
     @PostExchange("/user/role/{status}")
     Result<List<RoleEntityDto>> findByRoleCodeInAndStatus(@RequestBody List<String> roles, @PathVariable(value = "status") Integer status);
 
-    @GetExchange("/user/login/time/{username}")
-    void updateLoginTime(String username);
+    @PostExchange("/user/login/time/{username}")
+    void updateLoginTime(@PathVariable String username);
 
     @GetExchange("/user/email/{email}")
     Result<UserEntityDto> findByEmail(@PathVariable(value = "email") String email);
@@ -30,7 +30,7 @@ public interface UserHttpService {
     @GetExchange("/user/role/{userId}")
     Result<List<String>> findRoleCodesDecorByUserId(@PathVariable(value = "userId") Long userId);
 
-    @GetExchange("/user/query/{userId}")
+    @GetExchange("/user/{userId}")
     Result<UserEntityDto> findById(@PathVariable(value = "userId") Long userId);
 
     @GetExchange("/user/login/query/{username}")
