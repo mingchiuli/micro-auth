@@ -120,6 +120,8 @@ public class MessageInterceptor implements ChannelInterceptor {
             Subscription pullSubscription = subscriptionMap.get("pull::" + subscriptionKey);
             pushSubscription.unsubscribe();
             pullSubscription.unsubscribe();
+            subscriptionMap.remove("push::" + subscriptionKey);
+            subscriptionMap.remove("pull::" + subscriptionKey);
         }
     }
 }
