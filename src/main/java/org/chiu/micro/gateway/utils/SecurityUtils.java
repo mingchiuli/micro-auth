@@ -2,14 +2,13 @@ package org.chiu.micro.gateway.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
-import static org.chiu.micro.gateway.lang.ExceptionMessage.AUTH_EXCEPTION;
 
 @Component
 public class SecurityUtils {
@@ -23,7 +22,7 @@ public class SecurityUtils {
     public static List<String> getLoginRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (Boolean.TRUE.equals(authentication instanceof AnonymousAuthenticationToken)) {
-            throw new BadCredentialsException(AUTH_EXCEPTION.getMsg());
+            return Collections.emptyList();
         }
 
         return (List<String>) authentication.getDetails();
@@ -36,12 +35,8 @@ public class SecurityUtils {
     public static Long getLoginUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (Boolean.TRUE.equals(authentication instanceof AnonymousAuthenticationToken)) {
-            throw new BadCredentialsException(AUTH_EXCEPTION.getMsg());
+            return Long.valueOf(0);
         }
         return Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
-    }
-
-    public Boolean isAdmin(List<String> roles) {
-        return roles.contains(highestRole);
     }
 }

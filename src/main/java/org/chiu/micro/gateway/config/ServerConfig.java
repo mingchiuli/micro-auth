@@ -27,7 +27,7 @@ public class ServerConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-blog:8081")
+                .baseUrl("http://micro-blog:8081/sys/blog")
                 .requestFactory(requestFactory)
                 .build();
 
@@ -44,7 +44,7 @@ public class ServerConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-search:8081")
+                .baseUrl("http://micro-search:8081/search")
                 .requestFactory(requestFactory)
                 .build();
 
@@ -61,7 +61,7 @@ public class ServerConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-exbihit:8081")
+                .baseUrl("http://micro-exbihit:8081/public/blog")
                 .requestFactory(requestFactory)
                 .build();
 
@@ -79,7 +79,7 @@ public class ServerConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-websocket:8081")
+                .baseUrl("http://micro-websocket:8081/edit")
                 .requestFactory(requestFactory)
                 .build();
 
