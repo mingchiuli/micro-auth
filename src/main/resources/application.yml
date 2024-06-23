@@ -19,6 +19,8 @@ server:
   max-http-request-header-size: 10MB
 
 blog:
+  email-try-count: 3
+  password-error-intervalTime: 900000
   jwt:
     access-token-expire: 21600
     refresh-token-expire: 604800

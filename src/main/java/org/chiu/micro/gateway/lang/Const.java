@@ -91,7 +91,11 @@ public enum Const {
 
     USER("user"),
 
-    USER_DISABLED("用户已注销");
+    USER_DISABLED("用户已注销"),
+    
+    PULL("pull::"),
+    
+    PUSH("push::");
 
 
 

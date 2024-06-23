@@ -29,7 +29,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import static org.chiu.micro.gateway.lang.Const.TOKEN_PREFIX;
+import static org.chiu.micro.gateway.lang.Const.*;
 import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
 
 /**
@@ -110,18 +110,18 @@ public class MessageInterceptor implements ChannelInterceptor {
             });
 
             String subscriptionKey = KeyFactory.createSubscriptionKey(userId, blogId);
-            subscriptionMap.put("push::" + subscriptionKey, pushSubscription);
-            subscriptionMap.put("pull::" + subscriptionKey, pullSubscription);
+            subscriptionMap.put(PUSH.getInfo() + subscriptionKey, pushSubscription);
+            subscriptionMap.put(PULL.getInfo() + subscriptionKey, pullSubscription);
         }
 
         if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
             String subscriptionKey = KeyFactory.createSubscriptionKey(userId, blogId);
-            Subscription pushSubscription = subscriptionMap.get("push::" + subscriptionKey);
-            Subscription pullSubscription = subscriptionMap.get("pull::" + subscriptionKey);
+            Subscription pushSubscription = subscriptionMap.get(PUSH.getInfo() + subscriptionKey);
+            Subscription pullSubscription = subscriptionMap.get(PULL.getInfo() + subscriptionKey);
             pushSubscription.unsubscribe();
             pullSubscription.unsubscribe();
-            subscriptionMap.remove("push::" + subscriptionKey);
-            subscriptionMap.remove("pull::" + subscriptionKey);
+            subscriptionMap.remove(PUSH.getInfo() + subscriptionKey);
+            subscriptionMap.remove(PULL.getInfo() + subscriptionKey);
         }
     }
 }

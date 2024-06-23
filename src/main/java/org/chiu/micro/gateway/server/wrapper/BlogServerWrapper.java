@@ -29,70 +29,71 @@ public class BlogServerWrapper {
 
     private final BlogServer blogServer;
 
-      @PostMapping("/save")
-      @PreAuthorize("hasAuthority('sys:blog:save')")
-      public Result<Void> saveOrUpdate(@RequestBody BlogEntityReq blog) {
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.saveOrUpdate(blog, userId);
-      }
-      @PostMapping("/delete")
-      @PreAuthorize("hasAuthority('sys:blog:delete')")
-      public Result<Void> deleteBlogs(@RequestBody List<Long> ids) {
-          var req = new DeleteBlogsReq();
-          req.setIds(ids);
-          req.setRoles(SecurityUtils.getLoginRole());
-          req.setUserId(SecurityUtils.getLoginUserId());
-          return blogServer.deleteBatch(req);
-      }
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('sys:blog:save')")
+    public Result<Void> saveOrUpdate(@RequestBody BlogEntityReq blog) {
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.saveOrUpdate(blog, userId);
+    }
 
-      @GetMapping("/lock/{blogId}")
-      @PreAuthorize("hasAuthority('sys:blog:lock')")
-      public Result<String> setBlogToken(@PathVariable(value = "blogId") Long blogId) {
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.setBlogToken(blogId, userId);
-      }
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('sys:blog:delete')")
+    public Result<Void> deleteBlogs(@RequestBody List<Long> ids) {
+        var req = new DeleteBlogsReq();
+        req.setIds(ids);
+        req.setRoles(SecurityUtils.getLoginRole());
+        req.setUserId(SecurityUtils.getLoginUserId());
+        return blogServer.deleteBatch(req);
+    }
 
-      @GetMapping("/blogs")
-      @PreAuthorize("hasAuthority('sys:blog:blogs')")
-      public Result<PageAdapter<BlogEntityVo>> getAllBlogs(@RequestParam Integer currentPage,
-                                                           @RequestParam Integer size) {
-          List<String> roles = SecurityUtils.getLoginRole();
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.findAllABlogs(currentPage, size, userId, roles);
-      }
+    @GetMapping("/lock/{blogId}")
+    @PreAuthorize("hasAuthority('sys:blog:lock')")
+    public Result<String> setBlogToken(@PathVariable(value = "blogId") Long blogId) {
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.setBlogToken(blogId, userId);
+    }
 
-      @GetMapping("/deleted")
-      @PreAuthorize("hasAuthority('sys:blog:deleted')")
-      public Result<PageAdapter<BlogDeleteVo>> getDeletedBlogs(@RequestParam Integer currentPage,
-                                                               @RequestParam Integer size) {
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.findDeletedBlogs(currentPage, size, userId);
-      }
+    @GetMapping("/blogs")
+    @PreAuthorize("hasAuthority('sys:blog:blogs')")
+    public Result<PageAdapter<BlogEntityVo>> getAllBlogs(@RequestParam Integer currentPage,
+            @RequestParam Integer size) {
+        List<String> roles = SecurityUtils.getLoginRole();
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.findAllABlogs(currentPage, size, userId, roles);
+    }
 
-      @GetMapping("/recover/{idx}")
-      @PreAuthorize("hasAuthority('sys:blog:recover')")
-      public Result<Void> recoverDeletedBlog(@PathVariable(value = "idx") Integer idx) {
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.recoverDeletedBlog(idx, userId);
-      }
+    @GetMapping("/deleted")
+    @PreAuthorize("hasAuthority('sys:blog:deleted')")
+    public Result<PageAdapter<BlogDeleteVo>> getDeletedBlogs(@RequestParam Integer currentPage,
+            @RequestParam Integer size) {
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.findDeletedBlogs(currentPage, size, userId);
+    }
 
-      @PostMapping("/oss/upload")
-      @PreAuthorize("hasAuthority('sys:blog:oss:upload')")
-      public Result<String> uploadOss(@RequestParam MultipartFile image) {
-          Long userId = SecurityUtils.getLoginUserId();
-          return blogServer.uploadOss(image, userId);
-      }
+    @GetMapping("/recover/{idx}")
+    @PreAuthorize("hasAuthority('sys:blog:recover')")
+    public Result<Void> recoverDeletedBlog(@PathVariable(value = "idx") Integer idx) {
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.recoverDeletedBlog(idx, userId);
+    }
 
-      @GetMapping("/oss/delete")
-      @PreAuthorize("hasAuthority('sys:blog:oss:delete')")
-      public Result<Void> deleteOss(@RequestParam String url) {
-          return blogServer.deleteOss(url);
-      }
+    @PostMapping("/oss/upload")
+    @PreAuthorize("hasAuthority('sys:blog:oss:upload')")
+    public Result<String> uploadOss(@RequestParam MultipartFile image) {
+        Long userId = SecurityUtils.getLoginUserId();
+        return blogServer.uploadOss(image, userId);
+    }
 
-      @GetMapping("/download")
-      @PreAuthorize("hasAuthority('sys:blog:download')")
-      public Result<Void> download() {
-          return blogServer.download();
-      }
-    
+    @GetMapping("/oss/delete")
+    @PreAuthorize("hasAuthority('sys:blog:oss:delete')")
+    public Result<Void> deleteOss(@RequestParam String url) {
+        return blogServer.deleteOss(url);
+    }
+
+    @GetMapping("/download")
+    @PreAuthorize("hasAuthority('sys:blog:download')")
+    public Result<Void> download() {
+        return blogServer.download();
+    }
+
 }

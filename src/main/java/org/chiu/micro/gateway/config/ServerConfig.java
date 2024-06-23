@@ -96,7 +96,7 @@ public class ServerConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-user:8081")
+                .baseUrl("http://micro-user:8081/sys")
                 .requestFactory(requestFactory)
                 .build();
 
