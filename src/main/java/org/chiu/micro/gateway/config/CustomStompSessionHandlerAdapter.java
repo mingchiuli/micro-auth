@@ -32,7 +32,6 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
     @Override
     @SneakyThrows
 	public void handleFrame(StompHeaders headers, Object payload) {
-        System.out.println("!!!");
         StompMessageDto message = (StompMessageDto) payload;
         Integer type = message.getType();
         Integer version = message.getVersion();
