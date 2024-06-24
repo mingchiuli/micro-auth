@@ -2,6 +2,7 @@ package org.chiu.micro.gateway.key;
 
 import java.util.Objects;
 
+
 import static org.chiu.micro.gateway.lang.Const.TEMP_EDIT_BLOG;
 
 public class KeyFactory {
@@ -12,12 +13,6 @@ public class KeyFactory {
         return Objects.isNull(blogId) ?
                 userId.toString() :
                 userId + "/" + blogId;
-    }
-
-    public static String createSubscriptionKey(Long userId, String blogId) {
-        return Objects.isNull(blogId) ?
-                userId.toString() :
-                userId + "::" + blogId;
     }
 
     public static String createBlogEditRedisKey(Long userId, Long blogId) {

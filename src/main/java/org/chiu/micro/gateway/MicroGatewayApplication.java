@@ -10,8 +10,8 @@ import org.springframework.context.annotation.ImportRuntimeHints;
 @ImportRuntimeHints({ CustomRuntimeHints.class })
 public class MicroGatewayApplication {
 
-	public static void main(String[] args) {
+		public static void main(String[] args) {
 				SpringApplication.run(MicroGatewayApplication.class, args);
-	}
+		}
 
 }

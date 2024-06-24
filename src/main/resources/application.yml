@@ -1,4 +1,12 @@
 spring:
+  mail:
+    host: smtp.163.com
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
   threads:
     virtual:
       enabled: true

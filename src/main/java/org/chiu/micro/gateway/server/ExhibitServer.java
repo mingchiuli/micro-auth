@@ -19,7 +19,7 @@ public interface ExhibitServer {
     Result<BlogExhibitVo> getBlogDetail(@PathVariable(name = "blogId") Long blogId, @RequestBody List<String> roles,  @PathVariable(name = "userId") Long userId);
 
     @GetExchange("/page/{currentPage}")
-    Result<PageAdapter<BlogDescriptionVo>> findPage(@PathVariable Integer currentPage, @RequestParam Integer year);
+    Result<PageAdapter<BlogDescriptionVo>> findPage(@PathVariable Integer currentPage, @RequestParam(required = false) Integer year);
 
     @GetExchange("/secret/{blogId}")
     Result<BlogExhibitVo> getLockedBlog(@PathVariable Long blogId, @RequestParam(value = "readToken") String token);
