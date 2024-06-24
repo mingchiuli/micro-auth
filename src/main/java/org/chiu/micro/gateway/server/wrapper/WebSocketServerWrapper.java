@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.messaging.simp.stomp.StompSession;
 
 import lombok.RequiredArgsConstructor;
@@ -32,14 +30,12 @@ public class WebSocketServerWrapper {
 
     private final WebSocketServer webSocketServer;
 
-    private final ObjectMapper objectMapper;
-
     @MessageMapping("/edit/ws/push/action")
     @PreAuthorize("hasAuthority('sys:edit:push:action')")
     @SneakyThrows
     public void pushAction(@RequestBody BlogEditPushActionReq req) {
         Long userId = SecurityUtils.getLoginUserId();
-        stompSession.send("/app/edit/ws/push/action/" + userId, objectMapper.writeValueAsString(req));
+        stompSession.send("/app/edit/ws/push/action/" + userId, req);
     }
 
     @PostMapping("/edit/push/all")

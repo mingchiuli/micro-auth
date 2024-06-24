@@ -7,11 +7,8 @@ import org.chiu.micro.gateway.key.KeyFactory;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSession.Subscription;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -22,25 +19,21 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
   
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    private final ObjectMapper objectMapper;
-
-    private Subscription subscription;
-
     @Override
 	public Type getPayloadType(StompHeaders headers) {
-		return String.class;
+		return StompMessageDto.class;
 	}
 
     @Override
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-        subscription = session.subscribe("/edits/msg", this);
+        session.subscribe("/edits/msg", this);
 	}
 
     @Override
     @SneakyThrows
 	public void handleFrame(StompHeaders headers, Object payload) {
         System.out.println("!!!");
-        StompMessageDto message = objectMapper.readValue((String) payload,StompMessageDto.class);
+        StompMessageDto message = (StompMessageDto) payload;
         Integer type = message.getType();
         Integer version = message.getVersion();
         String userKey = KeyFactory.createPushContentIdentityKey(message.getUserId(), message.getBlogId());
@@ -55,11 +48,4 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
         }
         
 	}
-
-    @Override
-	public void handleTransportError(StompSession session, Throwable exception) {
-        subscription.unsubscribe();
-	}
-
-
 }

@@ -3,7 +3,6 @@ package org.chiu.micro.gateway.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.scheduling.concurrent.SimpleAsyncTaskScheduler;
@@ -25,7 +24,7 @@ public class WebSocketStompClientConfig {
     StompSession stompSession() {
         WebSocketClient webSocketClient = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
-        stompClient.setMessageConverter(new StringMessageConverter());
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         SimpleAsyncTaskScheduler taskScheduler = new SimpleAsyncTaskScheduler();
         taskScheduler.setVirtualThreads(true);
         stompClient.setTaskScheduler(taskScheduler); // for heartbeats
