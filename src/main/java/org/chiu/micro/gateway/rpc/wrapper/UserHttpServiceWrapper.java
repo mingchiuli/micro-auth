@@ -1,6 +1,6 @@
 package org.chiu.micro.gateway.rpc.wrapper;
 
-import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
+import static org.chiu.micro.gateway.lang.ExceptionMessage.NO_FOUND;
 
 import java.util.List;
 
