@@ -25,6 +25,9 @@ public class UserHttpServiceWrapper {
 
     public List<RoleEntityDto> findByRoleCodeInAndStatus(List<String> roles, Integer status) {
         Result<List<RoleEntityDto>> result = userHttpService.findByRoleCodeInAndStatus(roles, status);
+        if (result.getCode() != 200) {
+            throw new MissException(NO_FOUND.getMsg());
+        }
         return result.getData();
     }
 
@@ -48,21 +51,33 @@ public class UserHttpServiceWrapper {
 
     public List<String> findRoleCodesDecorByUserId(Long userId) {
         Result<List<String>> result = userHttpService.findRoleCodesDecorByUserId(userId);
+        if (result.getCode() != 200) {
+            throw new MissException(NO_FOUND.getMsg());
+        }
         return result.getData();
     }
 
     public UserEntityDto findById(Long userId) {
         Result<UserEntityDto> result = userHttpService.findById(userId);
+        if (result.getCode() != 200) {
+            throw new MissException(NO_FOUND.getMsg());
+        }
         return result.getData();
     }
 
     public UserEntityDto findByUsernameOrEmailOrPhone(String username) {
         Result<UserEntityDto> result = userHttpService.findByUsernameOrEmailOrPhone(username);
+        if (result.getCode() != 200) {
+            throw new MissException(NO_FOUND.getMsg());
+        }
         return result.getData();
     }
 
     public List<String> getAuthoritiesByRoleCodes(List<String> rawRoles) {
         Result<List<String>> result = userHttpService.getAuthoritiesByRoleCodes(rawRoles);
+        if (result.getCode() != 200) {
+            throw new MissException(NO_FOUND.getMsg());
+        }
         return result.getData();
     }
 

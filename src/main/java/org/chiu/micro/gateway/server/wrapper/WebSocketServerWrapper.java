@@ -1,5 +1,6 @@
 package org.chiu.micro.gateway.server.wrapper;
 
+import org.chiu.micro.gateway.config.WebSocketStompSessionWrapper;
 import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.req.BlogEditPushActionReq;
 import org.chiu.micro.gateway.req.BlogEditPushAllReq;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.messaging.simp.stomp.StompSession;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -26,7 +26,7 @@ import lombok.SneakyThrows;
 @RequiredArgsConstructor
 public class WebSocketServerWrapper {
 
-    private final StompSession stompSession;
+    private final WebSocketStompSessionWrapper webSocketStompSessionWrapper;
 
     private final WebSocketServer webSocketServer;
 
@@ -35,7 +35,7 @@ public class WebSocketServerWrapper {
     @SneakyThrows
     public void pushAction(@RequestBody BlogEditPushActionReq req) {
         Long userId = SecurityUtils.getLoginUserId();
-        stompSession.send("/app/edit/ws/push/action/" + userId, req);
+        webSocketStompSessionWrapper.getStompSession().send("/app/edit/ws/push/action/" + userId, req);
     }
 
     @PostMapping("/edit/push/all")

@@ -25,7 +25,7 @@ public class SearchServerWrapper {
     private final SearchServer searchServer;
 
     @GetMapping("/public/blog")
-    public Result<PageAdapter<BlogDocumentVo>> selectBlogsByES(@RequestParam(value = "currentPage") Integer currentPage,
+    public Result<PageAdapter<BlogDocumentVo>> selectBlogsByES(@RequestParam(value = "currentPage", required = false) Integer currentPage,
                                                                @RequestParam(value = "allInfo") Boolean allInfo,
                                                                @RequestParam(value = "year", required = false) String year,
                                                                @RequestParam(value = "keywords") String keywords) {
@@ -34,8 +34,8 @@ public class SearchServerWrapper {
 
     @GetMapping("/sys/blogs")
     @PreAuthorize("hasAuthority('sys:search:blogs')")
-    public Result<PageAdapter<BlogEntityVo>> searchAllBlogs(@RequestParam Integer currentPage,
-                                                            @RequestParam Integer size,
+    public Result<PageAdapter<BlogEntityVo>> searchAllBlogs(@RequestParam(required = false) Integer currentPage,
+                                                            @RequestParam(required = false) Integer size,
                                                             @RequestParam(value = "keywords") String keywords) {
         Long userId = SecurityUtils.getLoginUserId();
         List<String> roles = SecurityUtils.getLoginRole();

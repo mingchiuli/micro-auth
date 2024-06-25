@@ -121,8 +121,8 @@ public class UserServerWrapper {
 
     @GetMapping("/role/roles")
     @PreAuthorize("hasAuthority('sys:role:roles')")
-    public Result<PageAdapter<RoleEntityVo>> getPage(@RequestParam Integer currentPage,
-                                                     @RequestParam Integer size) {
+    public Result<PageAdapter<RoleEntityVo>> getPage(@RequestParam(required = false) Integer currentPage,
+                                                     @RequestParam(required = false) Integer size) {
         return userServer.getRolePage(currentPage, size);
     }
 
@@ -184,7 +184,7 @@ public class UserServerWrapper {
     }
 
     @GetMapping("/user/register/check")
-    public Result<Boolean> checkRegisterPage(String token) {
+    public Result<Boolean> checkRegisterPage(@RequestParam String token) {
         return userServer.checkRegisterPage(token);
     }
 

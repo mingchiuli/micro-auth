@@ -62,7 +62,7 @@ public class JwtUtils implements TokenUtils<Claims> {
         // 过期时间
         var expireDate = new Date(nowDate.getTime() + expire * 1000);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .issuer("megalith")
+                .issuer("micro-gateway")
                 .subject(userId)
                 .claim("roles", roles)
                 .issueTime(nowDate)

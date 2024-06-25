@@ -29,7 +29,7 @@ public interface BlogServer {
     Result<String> setBlogToken(@PathVariable(value = "blogId") Long blogId, @PathVariable(value = "userId") Long userId);
 
     @GetExchange("/blogs/{userId}")
-    Result<PageAdapter<BlogEntityVo>> findAllABlogs(@RequestParam(value = "currentPage") Integer currentPage, @RequestParam(value = "size") Integer size, @PathVariable Long userId, @RequestBody List<String> roles);
+    Result<PageAdapter<BlogEntityVo>> findAllABlogs(@RequestParam(value = "currentPage", required = false) Integer currentPage, @RequestParam(value = "size", required = false) Integer size, @PathVariable Long userId, @RequestBody List<String> roles);
 
     @GetExchange("/deleted/{userId}")
     Result<PageAdapter<BlogDeleteVo>> findDeletedBlogs(@RequestParam(value = "currentPage") Integer currentPage, @RequestParam(value = "size") Integer size, @PathVariable Long userId);

@@ -49,7 +49,7 @@ public class RpcConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://localhost:8086/inner")
+                .baseUrl("http://micro-user:8081/inner")
                 .requestFactory(requestFactory)
                 .build();
 

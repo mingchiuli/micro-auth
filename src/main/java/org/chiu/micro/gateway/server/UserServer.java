@@ -63,7 +63,7 @@ public interface UserServer {
     Result<RoleEntityVo> infoRole(@PathVariable Long id);
 
     @GetExchange("/role/roles")
-    Result<PageAdapter<RoleEntityVo>> getRolePage(@RequestParam Integer currentPage, @RequestParam Integer size);
+    Result<PageAdapter<RoleEntityVo>> getRolePage(@RequestParam(required = false) Integer currentPage, @RequestParam(required = false) Integer size);
 
     @PostExchange("/role/save")
     Result<Void> saveOrUpdateRole(@RequestBody RoleEntityReq role);
@@ -108,7 +108,7 @@ public interface UserServer {
     Result<Void> saveOrUpdateUser(@RequestBody UserEntityReq userEntityReq);
 
     @GetExchange("/user/page/{currentPage}")
-    Result<PageAdapter<UserEntityVo>> listPageUser(@PathVariable Integer currentPage, @RequestParam Integer size);
+    Result<PageAdapter<UserEntityVo>> listPageUser(@PathVariable Integer currentPage, @RequestParam(required = false) Integer size);
 
     @PostExchange("/user/delete")
     Result<Void> deleteUsers(@RequestBody List<Long> ids);

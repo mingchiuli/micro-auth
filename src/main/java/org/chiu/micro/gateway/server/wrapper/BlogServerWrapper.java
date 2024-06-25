@@ -55,8 +55,8 @@ public class BlogServerWrapper {
 
     @GetMapping("/blogs")
     @PreAuthorize("hasAuthority('sys:blog:blogs')")
-    public Result<PageAdapter<BlogEntityVo>> getAllBlogs(@RequestParam Integer currentPage,
-            @RequestParam Integer size) {
+    public Result<PageAdapter<BlogEntityVo>> getAllBlogs(@RequestParam(required = false) Integer currentPage,
+                                                         @RequestParam(required = false) Integer size) {
         List<String> roles = SecurityUtils.getLoginRole();
         Long userId = SecurityUtils.getLoginUserId();
         return blogServer.findAllABlogs(currentPage, size, userId, roles);
@@ -65,7 +65,7 @@ public class BlogServerWrapper {
     @GetMapping("/deleted")
     @PreAuthorize("hasAuthority('sys:blog:deleted')")
     public Result<PageAdapter<BlogDeleteVo>> getDeletedBlogs(@RequestParam Integer currentPage,
-            @RequestParam Integer size) {
+                                                             @RequestParam Integer size) {
         Long userId = SecurityUtils.getLoginUserId();
         return blogServer.findDeletedBlogs(currentPage, size, userId);
     }

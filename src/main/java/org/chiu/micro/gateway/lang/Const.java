@@ -11,13 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Const {
 
-    PARAGRAPH_PREFIX("para::"),
-
-    PARAGRAPH_SPLITTER("\n\n"),
-
     TEMP_EDIT_BLOG("temp_edit_blog:"),
 
-    GRANT_TYPE_EMAIL("email"),
 
     EMAIL_CODE("email_code"),
 
@@ -38,64 +33,12 @@ public enum Const {
     PHONE_KEY("phone_validation:"),
 
     PASSWORD_KEY("password_validation:"),
-
-    READ_RECENT("blogReadRecent:"),
-
-    HOT_BLOGS_PATTERN("hot_blogs*"),
-
-    COOP_PREFIX("coop_blogId:"),
-
-    CO_NUM_PREFIX("co_num:"),
-
-    QUERY_DELETED("del_blog_user:"),
-
-    READ_TOKEN("read_token:"),
-
-    HOT_BLOGS("hot_blogs"),
-
-    HOT_BLOG("hot_blog"),
-
-    BLOG_STATUS("blog_status"),
-
-    CONSUME_MONITOR("consume:"),
-
-    BLOOM_FILTER_BLOG("bloom_filter_blog"),
-
-    BLOOM_FILTER_BLOG_STATUS("bloom_filter_blog_status"),
-
-    BLOOM_FILTER_PAGE("bloom_filter_page"),
-
-    BLOOM_FILTER_YEAR_PAGE("bloom_filter_page_"),
-
-    BLOOM_FILTER_YEARS("bloom_filter_years"),
-
-    HOT_READ("hot_read"),
     
-    BLOG_CONTENT("content"),
-
     TOKEN_PREFIX("Bearer "),
 
     ROLE_PREFIX("ROLE_"),
-
-    HOT_AUTHORITIES("hot_authorities"),
-
-    HOT_MENUS_AND_BUTTONS("hot_menus_and_buttons"),
     
-    A_WEEK("604899"),
-
-    BLOCK("block"),
-
-    BLOCK_USER("block_user:"),
-
-    REGISTER_PREFIX("register_prefix:"),
-
-    USER("user"),
-
-    USER_DISABLED("用户已注销"),
-    
-    PULL("pull::"),
-    
-    PUSH("push::");
+    BLOCK_USER("block_user:");
 
 
 

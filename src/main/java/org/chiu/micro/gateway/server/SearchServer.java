@@ -13,10 +13,10 @@ import org.springframework.web.service.annotation.GetExchange;
 public interface SearchServer {
 
   @GetExchange("/public/blog")
-  Result<PageAdapter<BlogDocumentVo>> selectBlogsByES(@RequestParam(value = "currentPage") Integer currentPage, @RequestParam(value = "allInfo") Boolean allInfo, @RequestParam(value = "year") String year, @RequestParam(value = "keywords") String keywords);
+  Result<PageAdapter<BlogDocumentVo>> selectBlogsByES(@RequestParam(value = "currentPage", required = false) Integer currentPage, @RequestParam(value = "allInfo") Boolean allInfo, @RequestParam(value = "year", required = false) String year, @RequestParam(value = "keywords") String keywords);
 
   @GetExchange("/sys/blogs")
-  Result<PageAdapter<BlogEntityVo>> searchAllBlogs(@RequestParam Integer currentPage, @RequestParam Integer size, @RequestParam(value = "keywords") String keywords, @RequestParam Long userId, @RequestBody List<String> roles);
+  Result<PageAdapter<BlogEntityVo>> searchAllBlogs(@RequestParam(required = false) Integer currentPage, @RequestParam(required = false) Integer size, @RequestParam(value = "keywords") String keywords, @RequestParam Long userId, @RequestBody List<String> roles);
 
 
   
