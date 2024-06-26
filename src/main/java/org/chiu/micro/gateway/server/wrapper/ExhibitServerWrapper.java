@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,10 +51,10 @@ public class ExhibitServerWrapper {
         return exhibitServer.checkToken(blogId, token);
     }
 
-    @GetMapping("/status/{blogId}/{userId}")
-    public Result<Integer> getBlogStatus(@PathVariable Long blogId,
-                                         @RequestBody List<String> roles,
-                                         @PathVariable Long userId) {
+    @GetMapping("/status/{blogId}")
+    public Result<Integer> getBlogStatus(@PathVariable Long blogId) {
+        List<String> roles = SecurityUtils.getLoginRole();
+        Long userId = SecurityUtils.getLoginUserId();
         return exhibitServer.getBlogStatus(blogId, roles, userId);
     }
 
