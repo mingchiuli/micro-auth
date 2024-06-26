@@ -1,6 +1,8 @@
 package org.chiu.micro.gateway.server.wrapper;
 
 import java.util.List;
+import java.nio.charset.StandardCharsets;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.page.PageAdapter;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletOutputStream;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @RestController
 @RequiredArgsConstructor
@@ -92,8 +96,14 @@ public class BlogServerWrapper {
 
     @GetMapping("/download")
     @PreAuthorize("hasAuthority('sys:blog:download')")
-    public Result<Void> download() {
-        return blogServer.download();
+    @SneakyThrows
+    public void download(HttpServletResponse response) {
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        byte[] data = blogServer.download();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 
 }

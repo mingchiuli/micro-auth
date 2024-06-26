@@ -39,7 +39,7 @@ public interface UserServer {
     Result<Void> deleteAuthorities(List<Long> ids);
 
     @GetExchange("/authority/download")
-    void downloadAuthorities();
+    Result<byte[]> downloadAuthorities();
 
     @PostExchange("/menu/nav")
     Result<MenusAndButtonsVo> getCurrentUserNav(@RequestBody List<String> roles);
@@ -57,7 +57,7 @@ public interface UserServer {
     Result<Void> deleteMenu(@PathVariable Long id);
 
     @GetExchange("/menu/download")
-    void downloadMenu();
+    byte[] downloadMenu();
 
     @GetExchange("/role/info/{id}")
     Result<RoleEntityVo> infoRole(@PathVariable Long id);
@@ -84,7 +84,7 @@ public interface UserServer {
     Result<List<RoleAuthorityVo>> getAuthoritiesInfo(@PathVariable Long roleId);
 
     @GetExchange("/role/download")
-    void downloadRole();
+    byte[] downloadRole();
 
     @GetExchange("/role/valid/all")
     Result<List<RoleEntityVo>> getValidAll();
@@ -117,7 +117,7 @@ public interface UserServer {
     Result<UserEntityVo> findByIdUser(@PathVariable Long id);
 
     @GetExchange("/user/download")
-    void downloadUser();
+    byte[] downloadUser();
 
 
 }

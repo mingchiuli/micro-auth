@@ -8,7 +8,6 @@ import org.chiu.micro.gateway.req.BlogEntityReq;
 import org.chiu.micro.gateway.req.DeleteBlogsReq;
 import org.chiu.micro.gateway.vo.BlogDeleteVo;
 import org.chiu.micro.gateway.vo.BlogEntityVo;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,6 +42,6 @@ public interface BlogServer {
     @GetExchange("/oss/delete")
     Result<Void> deleteOss(@RequestParam String url);
 
-    @GetMapping("/download")
-    Result<Void> download();
+    @GetExchange("/download")
+    byte[] download();
 }

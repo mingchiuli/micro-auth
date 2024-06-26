@@ -31,7 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletOutputStream;
+import java.nio.charset.StandardCharsets;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 /**
  * UserServerWrapper
@@ -108,9 +112,14 @@ public class UserServerWrapper {
 
     @GetMapping("/menu/download")
     @PreAuthorize("hasAuthority('sys:menu:download')")
-    public Result<Void> downloadMenu() {
-        userServer.downloadMenu();
-        return Result.success();
+    @SneakyThrows
+    public void downloadMenu(HttpServletResponse response) {
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        byte[] data = userServer.downloadMenu();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 
     @GetMapping("/role/info/{id}")
@@ -166,9 +175,14 @@ public class UserServerWrapper {
 
     @GetMapping("/role/download")
     @PreAuthorize("hasAuthority('sys:role:download')")
-    public Result<Void> downloadRole() {
-        userServer.downloadRole();
-        return Result.success();
+    @SneakyThrows
+    public void downloadRole(HttpServletResponse response) {
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        byte[] data = userServer.downloadRole();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 
     @GetMapping("/role/valid/all")
@@ -234,8 +248,13 @@ public class UserServerWrapper {
 
     @GetMapping("/user/download")
     @PreAuthorize("hasAuthority('sys:user:download')")
-    public Result<Void> downloadUser() {
-        userServer.downloadUser();
-        return Result.success();
+    @SneakyThrows
+    public void downloadUser(HttpServletResponse response) {
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        byte[] data = userServer.downloadUser();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 }
