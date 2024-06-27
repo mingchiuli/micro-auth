@@ -1,6 +1,7 @@
 package org.chiu.micro.gateway.server.wrapper;
 
 import org.chiu.micro.gateway.config.WebSocketStompSessionWrapper;
+import org.chiu.micro.gateway.key.KeyFactory;
 import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.req.BlogEditPushActionReq;
 import org.chiu.micro.gateway.req.BlogEditPushAllReq;
@@ -8,6 +9,7 @@ import org.chiu.micro.gateway.server.WebSocketServer;
 import org.chiu.micro.gateway.utils.SecurityUtils;
 import org.chiu.micro.gateway.vo.BlogEditVo;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +32,20 @@ public class WebSocketServerWrapper {
 
     private final WebSocketServer webSocketServer;
 
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
     @MessageMapping("/edit/ws/push/action")
     @PreAuthorize("hasAuthority('sys:edit:push:action')")
     @SneakyThrows
     public void pushAction(@RequestBody BlogEditPushActionReq req) {
         Long userId = SecurityUtils.getLoginUserId();
-        webSocketStompSessionWrapper.getStompSession().send("/app/edit/ws/push/action/" + userId, req);
+        Long blogId = req.getId();
+        try {
+            webSocketStompSessionWrapper.getStompSession().send("/app/edit/ws/push/action/" + userId, req);
+        } catch (Exception e) {
+            String userKey = KeyFactory.createPushContentIdentityKey(userId, blogId);
+            simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, req.getVersion().toString());
+        }
     }
 
     @PostMapping("/edit/push/all")
