@@ -6,12 +6,12 @@ import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.page.PageAdapter;
 import org.chiu.micro.gateway.req.BlogEntityReq;
 import org.chiu.micro.gateway.req.DeleteBlogsReq;
+import org.chiu.micro.gateway.req.ImgUploadReq;
 import org.chiu.micro.gateway.vo.BlogDeleteVo;
 import org.chiu.micro.gateway.vo.BlogEntityVo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -37,7 +37,7 @@ public interface BlogServer {
     Result<Void> recoverDeletedBlog(@PathVariable(value = "idx") Integer idx, @PathVariable(value = "userId") Long userId);
 
     @PostExchange("/oss/upload/{userId}")
-    Result<String> uploadOss(@RequestParam MultipartFile image, @PathVariable Long userId);
+    Result<String> uploadOss(@RequestParam ImgUploadReq image, @PathVariable Long userId);
 
     @GetExchange("/oss/delete")
     Result<Void> deleteOss(@RequestParam String url);

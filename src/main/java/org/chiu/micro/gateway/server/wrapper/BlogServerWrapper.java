@@ -8,6 +8,7 @@ import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.page.PageAdapter;
 import org.chiu.micro.gateway.req.BlogEntityReq;
 import org.chiu.micro.gateway.req.DeleteBlogsReq;
+import org.chiu.micro.gateway.req.ImgUploadReq;
 import org.chiu.micro.gateway.server.BlogServer;
 import org.chiu.micro.gateway.utils.SecurityUtils;
 import org.chiu.micro.gateway.vo.BlogDeleteVo;
@@ -83,9 +84,13 @@ public class BlogServerWrapper {
 
     @PostMapping("/oss/upload")
     @PreAuthorize("hasAuthority('sys:blog:oss:upload')")
+    @SneakyThrows
     public Result<String> uploadOss(@RequestParam MultipartFile image) {
         Long userId = SecurityUtils.getLoginUserId();
-        return blogServer.uploadOss(image, userId);
+        ImgUploadReq req = new ImgUploadReq();
+        req.setData(image.getBytes());
+        req.setFileName(image.getOriginalFilename());
+        return blogServer.uploadOss(req, userId);
     }
 
     @GetMapping("/oss/delete")

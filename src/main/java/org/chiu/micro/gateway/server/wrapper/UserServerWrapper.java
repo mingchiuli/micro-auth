@@ -3,6 +3,7 @@ package org.chiu.micro.gateway.server.wrapper;
 import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.page.PageAdapter;
 import org.chiu.micro.gateway.req.AuthorityEntityReq;
+import org.chiu.micro.gateway.req.ImgUploadReq;
 import org.chiu.micro.gateway.req.MenuEntityReq;
 import org.chiu.micro.gateway.req.RoleEntityReq;
 import org.chiu.micro.gateway.req.UserEntityRegisterReq;
@@ -210,9 +211,13 @@ public class UserServerWrapper {
     }
 
     @PostMapping("/user/register/image/upload")
+    @SneakyThrows
     public Result<String> imageUpload(@RequestParam MultipartFile image,
                                       @RequestParam String token) {
-        return userServer.imageUpload(token, image);
+        var req = new ImgUploadReq();
+        req.setData(image.getBytes());
+        req.setFileName(image.getOriginalFilename());
+        return userServer.imageUpload(token, req);
     }
 
     @GetMapping("/user/register/image/delete")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.chiu.micro.gateway.lang.Result;
 import org.chiu.micro.gateway.page.PageAdapter;
 import org.chiu.micro.gateway.req.AuthorityEntityReq;
+import org.chiu.micro.gateway.req.ImgUploadReq;
 import org.chiu.micro.gateway.req.MenuEntityReq;
 import org.chiu.micro.gateway.req.RoleEntityReq;
 import org.chiu.micro.gateway.req.UserEntityRegisterReq;
@@ -20,7 +21,6 @@ import org.chiu.micro.gateway.vo.UserEntityVo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -99,7 +99,7 @@ public interface UserServer {
     Result<Void> saveRegisterPage(@RequestParam String token, @RequestBody UserEntityRegisterReq userEntityRegisterReq);
 
     @PostExchange("/user/register/image/upload")
-    Result<String> imageUpload(@RequestParam String token, @RequestParam MultipartFile image);
+    Result<String> imageUpload(@RequestParam String token, @RequestParam ImgUploadReq image);
 
     @GetExchange("/user/register/image/delete")
     Result<Void> imageDelete(@RequestParam String token, @RequestParam String url);
