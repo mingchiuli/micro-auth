@@ -37,7 +37,7 @@ public interface BlogServer {
     Result<Void> recoverDeletedBlog(@PathVariable(value = "idx") Integer idx, @PathVariable(value = "userId") Long userId);
 
     @PostExchange("/oss/upload/{userId}")
-    Result<String> uploadOss(@RequestParam ImgUploadReq image, @PathVariable Long userId);
+    Result<String> uploadOss(@RequestBody ImgUploadReq image, @PathVariable Long userId);
 
     @GetExchange("/oss/delete")
     Result<Void> deleteOss(@RequestParam String url);

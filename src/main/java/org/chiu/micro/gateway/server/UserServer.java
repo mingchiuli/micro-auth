@@ -99,7 +99,7 @@ public interface UserServer {
     Result<Void> saveRegisterPage(@RequestParam String token, @RequestBody UserEntityRegisterReq userEntityRegisterReq);
 
     @PostExchange("/user/register/image/upload")
-    Result<String> imageUpload(@RequestParam String token, @RequestParam ImgUploadReq image);
+    Result<String> imageUpload(@RequestParam String token, @RequestBody ImgUploadReq image);
 
     @GetExchange("/user/register/image/delete")
     Result<Void> imageDelete(@RequestParam String token, @RequestParam String url);
