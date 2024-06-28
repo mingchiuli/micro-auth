@@ -53,7 +53,7 @@ public interface UserServer {
     @PostExchange("/menu/save")
     Result<Void> saveOrUpdateMenu(@RequestBody MenuEntityReq req);
 
-    @GetExchange("/menu/delete/{id}")
+    @PostExchange("/menu/delete/{id}")
     Result<Void> deleteMenu(@PathVariable Long id);
 
     @GetExchange("/menu/download")
