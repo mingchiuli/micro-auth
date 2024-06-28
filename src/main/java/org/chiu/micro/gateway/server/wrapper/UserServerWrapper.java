@@ -73,11 +73,15 @@ public class UserServerWrapper {
         return userServer.deleteAuthorities(ids);
     }
 
+    @SneakyThrows
     @GetMapping("/authority/download")
     @PreAuthorize("hasAuthority('sys:authority:download')")
-    public Result<Void> downloadAuthorities() {
-        userServer.downloadAuthorities();
-        return Result.success();
+    public void downloadAuthorities(HttpServletResponse response) {
+        byte[] data = userServer.downloadAuthorities();
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
     }
 
     @GetMapping("/menu/nav")

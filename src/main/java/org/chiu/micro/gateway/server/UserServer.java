@@ -36,10 +36,10 @@ public interface UserServer {
     Result<Void> saveOrUpdateAuthority(@RequestBody AuthorityEntityReq req);
 
     @PostExchange("/authority/delete")
-    Result<Void> deleteAuthorities(List<Long> ids);
+    Result<Void> deleteAuthorities(@RequestBody List<Long> ids);
 
     @GetExchange("/authority/download")
-    Result<byte[]> downloadAuthorities();
+    byte[] downloadAuthorities();
 
     @PostExchange("/menu/nav")
     Result<MenusAndButtonsVo> getCurrentUserNav(@RequestBody List<String> roles);
@@ -51,7 +51,7 @@ public interface UserServer {
     Result<List<MenuDisplayVo>> menuTree();
 
     @PostExchange("/menu/save")
-    Result<Void> saveOrUpdateMenu(MenuEntityReq req);
+    Result<Void> saveOrUpdateMenu(@RequestBody MenuEntityReq req);
 
     @GetExchange("/menu/delete/{id}")
     Result<Void> deleteMenu(@PathVariable Long id);
