@@ -13,7 +13,7 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface UserHttpService {
 
     @GetExchange("/user/status/{username}/{status}")
-    void changeUserStatusByUsername(@PathVariable(value = "username") String username, @PathVariable(value = "code") Integer status);
+    void changeUserStatusByUsername(@PathVariable(value = "username") String username, @PathVariable(value = "status") Integer status);
 
     @PostExchange("/user/role/{status}")
     Result<List<RoleEntityDto>> findByRoleCodeInAndStatus(@RequestBody List<String> roles, @PathVariable(value = "status") Integer status);
