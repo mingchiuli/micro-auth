@@ -22,10 +22,6 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
         hints.serialization().registerType(LoginSuccessVo.class);
         hints.serialization().registerType(UserInfoVo.class);
 
-        hints.reflection().registerType(
-                TypeReference.of("com.github.benmanes.caffeine.cache.SSMSA"),
-                MemberCategory.PUBLIC_FIELDS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_PUBLIC_METHODS);
-
         // Register resources
         hints.resources().registerPattern("script/email-phone.lua");
         hints.resources().registerPattern("script/password.lua");
