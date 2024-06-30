@@ -24,7 +24,8 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
         hints.serialization().registerType(LoginSuccessVo.class);
         hints.serialization().registerType(UserInfoVo.class);
 
-        hints.serialization().registerType(StompMessageDto.class);
+        //CustomStompSessionHandlerAdapter使用
+        // hints.serialization().registerType(StompMessageDto.class);
         hints.reflection().registerConstructor(StompMessageDto.class.getDeclaredConstructor(), ExecutableMode.INVOKE);
 
         // Register resources
