@@ -1,9 +1,11 @@
 package org.chiu.micro.gateway.dto;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class StompMessageDto {
+public class StompMessageDto implements Serializable {
 
     private Integer version;
 

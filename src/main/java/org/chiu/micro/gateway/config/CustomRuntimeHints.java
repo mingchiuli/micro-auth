@@ -1,6 +1,8 @@
 package org.chiu.micro.gateway.config;
 
 import lombok.SneakyThrows;
+
+import org.chiu.micro.gateway.dto.StompMessageDto;
 import org.chiu.micro.gateway.vo.LoginSuccessVo;
 import org.chiu.micro.gateway.vo.UserInfoVo;
 import org.springframework.aot.hint.*;
@@ -21,6 +23,9 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
 
         hints.serialization().registerType(LoginSuccessVo.class);
         hints.serialization().registerType(UserInfoVo.class);
+
+        hints.serialization().registerType(StompMessageDto.class);
+        hints.reflection().registerConstructor(StompMessageDto.class.getDeclaredConstructor(), ExecutableMode.INVOKE);
 
         // Register resources
         hints.resources().registerPattern("script/email-phone.lua");

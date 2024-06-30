@@ -12,10 +12,12 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
 @SuppressWarnings("null")
+@Slf4j
 public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter {
   
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -33,6 +35,7 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
     @Override
     @SneakyThrows
 	public void handleFrame(StompHeaders headers, Object payload) {
+        log.info("received msg:{}", payload);
         StompMessageDto message = (StompMessageDto) payload;
         Integer type = message.getType();
         Integer version = message.getVersion();
