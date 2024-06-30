@@ -26,7 +26,6 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
 
         //CustomStompSessionHandlerAdapter使用
         hints.serialization().registerType(StompMessageDto.class);
-        // hints.reflection().registerConstructor(StompMessageDto.class.getDeclaredConstructor(), ExecutableMode.INVOKE);
 
         // Register resources
         hints.resources().registerPattern("script/email-phone.lua");
