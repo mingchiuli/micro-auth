@@ -35,3 +35,7 @@ blog:
   highest-role: admin
   sms:
     base-url: https://dysmsapi.aliyuncs.com
+
+logging:
+  level:
+    org.springframework.messaging.simp.stomp.DefaultStompSession: TRACE
