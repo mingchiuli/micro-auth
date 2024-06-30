@@ -35,7 +35,6 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
     @Override
     @SneakyThrows
 	public void handleFrame(StompHeaders headers, Object payload) {
-        log.info("received msg:{}", payload);
         StompMessageDto message = (StompMessageDto) payload;
         Integer type = message.getType();
         Integer version = message.getVersion();
