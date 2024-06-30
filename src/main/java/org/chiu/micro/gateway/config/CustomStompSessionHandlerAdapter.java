@@ -15,6 +15,7 @@ import lombok.SneakyThrows;
 
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter {
   
     private final SimpMessagingTemplate simpMessagingTemplate;

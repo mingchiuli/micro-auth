@@ -29,6 +29,7 @@ import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
  */
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class MessageInterceptor implements ChannelInterceptor {
 
     private final TokenUtils<Claims> tokenUtils;
