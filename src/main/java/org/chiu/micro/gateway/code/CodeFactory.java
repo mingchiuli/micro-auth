@@ -2,10 +2,18 @@ package org.chiu.micro.gateway.code;
 
 import org.chiu.micro.gateway.exception.CodeException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
+import jakarta.annotation.PostConstruct;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Random;
 
@@ -18,6 +26,18 @@ import static org.chiu.micro.gateway.lang.Const.*;
 @Component
 @RequiredArgsConstructor
 public class CodeFactory {
+
+    private final ResourceLoader resourceLoader;
+
+    private String script;
+
+    @PostConstruct
+    @SneakyThrows
+    private void init() {
+        Resource resource = resourceLoader.getResource(ResourceUtils.CLASSPATH_URL_PREFIX + "script/save-code.lua");
+        script = resource.getContentAsString(StandardCharsets.UTF_8);
+    }
+
     private static final char[] code = {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
@@ -74,11 +94,8 @@ public class CodeFactory {
     }
 
     public void save(Object code, String prefix) {
-        String lua = "redis.call('hmset', KEYS[1], ARGV[1], ARGV[2], ARGV[3], ARGV[4]);" +
-                "redis.call('expire', KEYS[1], ARGV[5]);";
-
-        RedisScript<Void> script = RedisScript.of(lua);
-        redisTemplate.execute(script, Collections.singletonList(prefix),
+        RedisScript<Void> lua = RedisScript.of(script);
+        redisTemplate.execute(lua, Collections.singletonList(prefix),
                 "code", code.toString(), "try_count", "0", "120");
     }
 }
