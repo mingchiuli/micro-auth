@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.chiu.micro.gateway.token.Claims;
 import org.chiu.micro.gateway.token.TokenUtils;
@@ -29,7 +31,6 @@ import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
  */
 @Component
 @RequiredArgsConstructor
-@SuppressWarnings("null")
 public class MessageInterceptor implements ChannelInterceptor {
 
     private final TokenUtils<Claims> tokenUtils;
@@ -40,8 +41,9 @@ public class MessageInterceptor implements ChannelInterceptor {
     @SneakyThrows
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            String token = accessor.getFirstNativeHeader("Authorization");
+    
+        if (Objects.nonNull(accessor) && StompCommand.CONNECT.equals(accessor.getCommand())) {
+            String token = Optional.ofNullable(accessor.getFirstNativeHeader("Authorization")).orElse("");
 
             String jwt;
             try {

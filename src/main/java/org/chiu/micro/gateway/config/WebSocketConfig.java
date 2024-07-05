@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.chiu.micro.gateway.config.interceptor.CSRFChannelInterceptor;
 import org.chiu.micro.gateway.config.interceptor.MessageInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.concurrent.SimpleAsyncTaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
 
 /**
  * @author mingchiuli
@@ -20,7 +22,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
-@SuppressWarnings("null")
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final MessageInterceptor messageInterceptor;
@@ -28,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final CSRFChannelInterceptor csrfChannelInterceptor;
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
+    public void registerStompEndpoints(@NonNull StompEndpointRegistry registry) {
         registry.addEndpoint("/edit/ws")
                 .setAllowedOriginPatterns(
                         "http://localhost:1919",
@@ -38,7 +39,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
+    public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
         SimpleAsyncTaskScheduler taskScheduler = new SimpleAsyncTaskScheduler();
         taskScheduler.setVirtualThreads(true);
         //客户端向服务器发消息的前缀
@@ -50,7 +51,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
+    public void configureClientInboundChannel(@NonNull ChannelRegistration registration) {
         registration.interceptors(messageInterceptor, csrfChannelInterceptor);
     }
 }

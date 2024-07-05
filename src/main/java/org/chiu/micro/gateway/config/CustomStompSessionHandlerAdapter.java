@@ -1,9 +1,12 @@
 package org.chiu.micro.gateway.config;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 import org.chiu.micro.gateway.dto.StompMessageDto;
 import org.chiu.micro.gateway.key.KeyFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -15,37 +18,37 @@ import lombok.SneakyThrows;
 
 @Component
 @RequiredArgsConstructor
-@SuppressWarnings("null")
 public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter {
   
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
-	public Type getPayloadType(StompHeaders headers) {
+	public @NonNull Type getPayloadType(@NonNull StompHeaders headers) {
 		return StompMessageDto.class;
 	}
 
     @Override
-	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+	public void afterConnected(@NonNull StompSession session, @NonNull StompHeaders connectedHeaders) {
         session.subscribe("/edits/msg", this);
 	}
 
     @Override
     @SneakyThrows
-	public void handleFrame(StompHeaders headers, Object payload) {
+	public void handleFrame(@NonNull StompHeaders headers, @Nullable Object payload) {
         StompMessageDto message = (StompMessageDto) payload;
-        Integer type = message.getType();
-        Integer version = message.getVersion();
-        String userKey = KeyFactory.createPushContentIdentityKey(message.getUserId(), message.getBlogId());
-
-        if (Integer.valueOf(-1).equals(type)) {
-            simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, version.toString());
-            return;
+        if (Objects.nonNull(message)) {
+            Integer type = message.getType();
+            Integer version = message.getVersion();
+            String userKey = KeyFactory.createPushContentIdentityKey(message.getUserId(), message.getBlogId());
+    
+            if (Integer.valueOf(-1).equals(type)) {
+                simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, version.toString());
+                return;
+            }
+    
+            if (Integer.valueOf(-2).equals(type)) {
+                simpMessagingTemplate.convertAndSend("/edits/pull/" + userKey, version.toString());
+            }
         }
-
-        if (Integer.valueOf(-2).equals(type)) {
-            simpMessagingTemplate.convertAndSend("/edits/pull/" + userKey, version.toString());
-        }
-        
 	}
 }
