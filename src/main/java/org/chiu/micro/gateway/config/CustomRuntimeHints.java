@@ -31,5 +31,6 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
         hints.resources().registerPattern("script/email-phone.lua");
         hints.resources().registerPattern("script/password.lua");
         hints.resources().registerPattern("script/statistics.lua");
+        hints.resources().registerPattern("script/save-code.lua");
     }
 }
