@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+import static org.chiu.micro.gateway.lang.MessageEnum.*;
+
 @Component
 @RequiredArgsConstructor
 public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter {
@@ -41,12 +43,12 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
             Integer version = message.getVersion();
             String userKey = KeyFactory.createPushContentIdentityKey(message.getUserId(), message.getBlogId());
     
-            if (Integer.valueOf(-1).equals(type)) {
+            if (PUSH_ALL.getCode().equals(type)) {
                 simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, version.toString());
                 return;
             }
     
-            if (Integer.valueOf(-2).equals(type)) {
+            if (PULL_ALL.getCode().equals(type)) {
                 simpMessagingTemplate.convertAndSend("/edits/pull/" + userKey, version.toString());
             }
         }
