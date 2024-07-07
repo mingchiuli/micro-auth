@@ -1,6 +1,8 @@
 package org.chiu.micro.gateway.req;
 
 
+import java.util.List;
+
 import lombok.Data;
 
 
@@ -22,4 +24,6 @@ public class BlogEntityReq {
     private Integer status;
 
     private String link;
+
+    private List<String> sensitiveContentList;
 }
