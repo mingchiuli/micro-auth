@@ -2,6 +2,8 @@ package org.chiu.micro.gateway.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 
 @Data
 public class BlogEditVo {
@@ -21,4 +23,6 @@ public class BlogEditVo {
     private Integer status;
 
     private Integer version;
+
+    private List<String> sensitiveContentList;
 }
