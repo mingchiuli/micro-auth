@@ -2,6 +2,8 @@ package org.chiu.micro.gateway.req;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class BlogEditPushAllReq {
 
@@ -20,4 +22,6 @@ public class BlogEditPushAllReq {
     private String link;
 
     private Integer version;
+
+    private List<String> sensitiveContentList;
 }
