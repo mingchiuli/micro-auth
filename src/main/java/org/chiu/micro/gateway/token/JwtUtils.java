@@ -2,6 +2,7 @@ package org.chiu.micro.gateway.token;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.Algorithm;
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -11,7 +12,6 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import com.nimbusds.jose.jwk.source.JWKSetParseException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 
@@ -19,11 +19,13 @@ import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.SneakyThrows;
 
+import org.chiu.micro.gateway.exception.AuthException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -76,25 +78,25 @@ public class JwtUtils implements TokenUtils<Claims> {
     }
 
     @SuppressWarnings("unchecked")
-    @SneakyThrows
-    public Claims getVerifierByToken(String token) {
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        if (!signedJWT.verify(verifier)) {
-            throw new JWKSetParseException(AUTH_EXCEPTION.getMsg(), null);
+    public Claims getVerifierByToken(String token) throws AuthException {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            if (!signedJWT.verify(verifier)) {
+                throw new JOSEException(AUTH_EXCEPTION.getMsg(), null);
+            }
+            JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
+            Date expirationTime = jwtClaimsSet.getExpirationTime();
+            if (new Date().after(expirationTime)) {
+                throw new JOSEException(TOKEN_INVALID.getMsg(), null);
+            }
+            var claim = new Claims();
+
+            var roles = jwtClaimsSet.getClaim("roles");
+            claim.setUserId(jwtClaimsSet.getSubject());
+            claim.setRoles((List<String>) roles);
+            return claim;
+        } catch (JOSEException | ParseException e) {
+            throw new AuthException(TOKEN_INVALID.getMsg());
         }
-
-        JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
-
-        Date expirationTime = jwtClaimsSet.getExpirationTime();
-        if (new Date().after(expirationTime)) {
-            throw new JWKSetParseException(TOKEN_INVALID.getMsg(), null);
-        }
-
-        var claim = new Claims();
-
-        Object roles = jwtClaimsSet.getClaim("roles");
-        claim.setUserId(jwtClaimsSet.getSubject());
-        claim.setRoles((List<String>) roles);
-        return claim;
     }
 }

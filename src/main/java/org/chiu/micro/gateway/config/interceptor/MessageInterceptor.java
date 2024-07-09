@@ -1,14 +1,13 @@
 package org.chiu.micro.gateway.config.interceptor;
 
-import com.nimbusds.jose.jwk.source.JWKSetParseException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.chiu.micro.gateway.exception.AuthException;
 import org.chiu.micro.gateway.token.Claims;
 import org.chiu.micro.gateway.token.TokenUtils;
 import org.chiu.micro.gateway.utils.SecurityAuthenticationUtils;
@@ -23,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import static org.chiu.micro.gateway.lang.Const.*;
-import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
 
 /**
  * @author mingchiuli
@@ -38,21 +36,18 @@ public class MessageInterceptor implements ChannelInterceptor {
     private final SecurityAuthenticationUtils securityAuthenticationUtils;
 
     @Override
-    @SneakyThrows
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
     
         if (Objects.nonNull(accessor) && StompCommand.CONNECT.equals(accessor.getCommand())) {
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("Authorization")).orElse("");
-
-            String jwt;
+            String jwt = token.substring(TOKEN_PREFIX.getInfo().length());
+            Claims claims;
             try {
-                jwt = token.substring(TOKEN_PREFIX.getInfo().length());
-            } catch (IndexOutOfBoundsException e) {
-                throw new JWKSetParseException(TOKEN_INVALID.getMsg(), null);
+                claims = tokenUtils.getVerifierByToken(jwt);
+            } catch (AuthException e) {
+                return message;
             }
-
-            Claims claims = tokenUtils.getVerifierByToken(jwt);
             String userId = claims.getUserId();
             List<String> roles = claims.getRoles();
 

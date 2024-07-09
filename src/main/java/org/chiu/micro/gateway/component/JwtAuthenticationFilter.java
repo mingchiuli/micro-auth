@@ -3,9 +3,9 @@ package org.chiu.micro.gateway.component;
 import org.chiu.micro.gateway.token.Claims;
 import org.chiu.micro.gateway.token.TokenUtils;
 import org.chiu.micro.gateway.utils.SecurityAuthenticationUtils;
+import org.chiu.micro.gateway.exception.AuthException;
 import org.chiu.micro.gateway.lang.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.jwk.source.JWKSetParseException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
         try {
             authentication = getAuthentication(jwt);
-        } catch (JWKSetParseException e) {
+        } catch (AuthException e) {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -82,14 +82,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(String token) throws JWKSetParseException {
-        String jwt;
-        try {
-            jwt = token.substring(TOKEN_PREFIX.getInfo().length());
-        } catch (IndexOutOfBoundsException e) {
-            throw new JWKSetParseException(TOKEN_INVALID.getMsg(), e);
-        }
-
+    private Authentication getAuthentication(String token) throws AuthException {
+        String jwt = token.substring(TOKEN_PREFIX.getInfo().length());
         Claims claims = tokenUtils.getVerifierByToken(jwt);
         String userId = claims.getUserId();
         List<String> roles = claims.getRoles();
@@ -97,7 +91,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String mark = redisTemplate.opsForValue().get(BLOCK_USER.getInfo() + userId);
 
         if (StringUtils.hasLength(mark)) {
-            throw new JWKSetParseException(RE_LOGIN.getMsg(), null);
+            throw new AuthException(RE_LOGIN.getMsg());
         }
 
         return securityAuthenticationUtils.getAuthentication(roles, userId);

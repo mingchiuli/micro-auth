@@ -21,7 +21,7 @@ public class SecurityUtils {
     @SuppressWarnings("unchecked")
     public static List<String> getLoginRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (Boolean.TRUE.equals(authentication instanceof AnonymousAuthenticationToken)) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return Collections.emptyList();
         }
 
@@ -34,7 +34,7 @@ public class SecurityUtils {
 
     public static Long getLoginUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (Boolean.TRUE.equals(authentication instanceof AnonymousAuthenticationToken)) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
             return 0L;
         }
         return Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
