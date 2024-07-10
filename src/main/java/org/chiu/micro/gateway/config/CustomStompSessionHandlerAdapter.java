@@ -1,7 +1,7 @@
 package org.chiu.micro.gateway.config;
 
 import java.lang.reflect.Type;
-import java.util.Objects;
+import java.util.Optional;
 
 import org.chiu.micro.gateway.dto.StompMessageDto;
 import org.chiu.micro.gateway.key.KeyFactory;
@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 import static org.chiu.micro.gateway.lang.MessageEnum.*;
 
@@ -35,22 +34,21 @@ public class CustomStompSessionHandlerAdapter extends StompSessionHandlerAdapter
 	}
 
     @Override
-    @SneakyThrows
 	public void handleFrame(@NonNull StompHeaders headers, @Nullable Object payload) {
-        StompMessageDto message = (StompMessageDto) payload;
-        if (Objects.nonNull(message)) {
+        StompMessageDto dto = (StompMessageDto) payload;
+        Optional.ofNullable(dto).ifPresent(message -> {
             Integer type = message.getType();
             Integer version = message.getVersion();
             String userKey = KeyFactory.createPushContentIdentityKey(message.getUserId(), message.getBlogId());
-    
+
             if (PUSH_ALL.getCode().equals(type)) {
                 simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, version.toString());
                 return;
             }
-    
+
             if (PULL_ALL.getCode().equals(type)) {
                 simpMessagingTemplate.convertAndSend("/edits/pull/" + userKey, version.toString());
             }
-        }
+        });
 	}
 }
