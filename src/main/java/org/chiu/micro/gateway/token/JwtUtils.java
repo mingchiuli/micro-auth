@@ -82,12 +82,12 @@ public class JwtUtils implements TokenUtils<Claims> {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             if (!signedJWT.verify(verifier)) {
-                throw new AuthException(AUTH_EXCEPTION.getMsg(), null);
+                throw new AuthException(AUTH_EXCEPTION.getMsg());
             }
             JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
             Date expirationTime = jwtClaimsSet.getExpirationTime();
             if (new Date().after(expirationTime)) {
-                throw new AuthException(TOKEN_INVALID.getMsg(), null);
+                throw new AuthException(TOKEN_INVALID.getMsg());
             }
             var claim = new Claims();
 
