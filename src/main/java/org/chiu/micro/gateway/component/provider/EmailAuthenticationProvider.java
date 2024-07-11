@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Objects;
 
 import static org.chiu.micro.gateway.lang.ExceptionMessage.*;
 
@@ -82,7 +83,7 @@ public final class EmailAuthenticationProvider extends ProviderBase {
                 Long ttl = redisTemplate.execute(RedisScript.of(script, Long.class),
                         Collections.singletonList(prefix), "try_count");
 
-                if (Long.valueOf(0).equals(ttl)) {
+                if (Objects.equals(0L, ttl)) {
                     throw new BadCredentialsException(CODE_EXPIRED.getMsg());
                 }
                 throw new BadCredentialsException(CODE_MISMATCH.getMsg());
