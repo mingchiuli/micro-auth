@@ -1,1 +1,1 @@
-rootProject.name = "micro-auth-gateway"
+rootProject.name = "micro-auth"
