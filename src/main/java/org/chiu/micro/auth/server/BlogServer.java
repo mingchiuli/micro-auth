@@ -47,9 +47,9 @@ public interface BlogServer {
     @GetExchange("/download")
     byte[] download();
 
-    @PostExchange("/push/all/{userId}")
+    @PostExchange("/edit/push/all/{userId}")
     Result<Void> pushAll(@RequestBody BlogEditPushAllReq blog, @PathVariable Long userId);
 
-    @GetExchange("/pull/echo/{userId}")
+    @GetExchange("/edit/pull/echo/{userId}")
     Result<BlogEditVo> findEdit(@RequestParam(value = "blogId", required = false) Long id, @PathVariable Long userId);
 }
