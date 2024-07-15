@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.chiu.micro.auth.exception.AuthException;
 import org.chiu.micro.auth.lang.Result;
-import org.chiu.micro.auth.token.Claims;
-import org.chiu.micro.auth.token.TokenUtils;
 import org.chiu.micro.auth.utils.SecurityAuthenticationUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,34 +20,23 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import static org.chiu.micro.auth.lang.Const.*;
-import static org.chiu.micro.auth.lang.ExceptionMessage.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
 
-    private final TokenUtils<Claims> tokenUtils;
-
     private final SecurityAuthenticationUtils securityAuthenticationUtils;
-
-    private final StringRedisTemplate redisTemplate;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
                                    ObjectMapper objectMapper,
-                                   TokenUtils<Claims> tokenUtils,
-                                   SecurityAuthenticationUtils securityAuthenticationUtils,
-                                   StringRedisTemplate redisTemplate) {
+                                   SecurityAuthenticationUtils securityAuthenticationUtils) {
         super(authenticationManager);
         this.objectMapper = objectMapper;
-        this.tokenUtils = tokenUtils;
         this.securityAuthenticationUtils = securityAuthenticationUtils;
-        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -66,7 +52,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         Authentication authentication;
 
         try {
-            authentication = getAuthentication(jwt);
+            authentication = securityAuthenticationUtils.getAuthentication(jwt);
         } catch (AuthException e) {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -80,20 +66,5 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         // 非白名单资源、接口都要走这个流程，没有set就不能访问
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
-    }
-
-    private Authentication getAuthentication(String token) throws AuthException {
-        String jwt = token.substring(TOKEN_PREFIX.getInfo().length());
-        Claims claims = tokenUtils.getVerifierByToken(jwt);
-        String userId = claims.getUserId();
-        List<String> roles = claims.getRoles();
-
-        String mark = redisTemplate.opsForValue().get(BLOCK_USER.getInfo() + userId);
-
-        if (StringUtils.hasLength(mark)) {
-            throw new AuthException(RE_LOGIN.getMsg());
-        }
-
-        return securityAuthenticationUtils.getAuthentication(roles, userId);
     }
 }
