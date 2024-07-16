@@ -2,6 +2,7 @@ package org.chiu.micro.auth.utils;
 
 import lombok.RequiredArgsConstructor;
 
+import org.chiu.micro.auth.dto.AuthDto;
 import org.chiu.micro.auth.exception.AuthException;
 import org.chiu.micro.auth.rpc.wrapper.UserHttpServiceWrapper;
 import org.chiu.micro.auth.token.Claims;
@@ -40,6 +41,11 @@ public class SecurityAuthenticationUtils {
     }
 
      public Authentication getAuthentication(String token) throws AuthException {
+        AuthDto authDto = getAuthDto(token);
+        return getAuthentication(authDto.getAuthorities(), authDto.getUserId());
+    }
+
+    public AuthDto getAuthDto(String token) throws AuthException {
         String jwt = token.substring(TOKEN_PREFIX.getInfo().length());
         Claims claims = tokenUtils.getVerifierByToken(jwt);
         String userId = claims.getUserId();
@@ -51,6 +57,10 @@ public class SecurityAuthenticationUtils {
             throw new AuthException(RE_LOGIN.getMsg());
         }
 
-        return getAuthentication(roles, userId);
+        return AuthDto.builder()
+                .userId(userId)
+                .authorities(roles)
+                .build();
+        
     }
 }
