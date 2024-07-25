@@ -26,6 +26,7 @@ import static org.chiu.micro.auth.lang.Const.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 
 
 @Component
@@ -55,8 +56,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			LoginUser user = (LoginUser) authentication.getPrincipal();
 			Long userId = user.getUserId();
 
-			redisTemplate.delete(PASSWORD_KEY.getInfo() + username);
-			redisTemplate.delete(BLOCK_USER.getInfo() + userId);
+			List<String> keys = List.of(PASSWORD_KEY.getInfo() + username, BLOCK_USER.getInfo() + userId);
+			redisTemplate.delete(keys);
 
 			userHttpServiceWrapper.updateLoginTime(username);
 			// 生成jwt

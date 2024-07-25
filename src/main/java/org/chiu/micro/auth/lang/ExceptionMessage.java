@@ -41,7 +41,7 @@ public enum ExceptionMessage {
 
     ACCOUNT_LOCKED(34, "账户被锁"),
 
-    RE_LOGIN(35, "重新登里");
+    RE_LOGIN(35, "重新登录");
     
     private final Integer code;
 
