@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import static org.chiu.micro.auth.lang.Const.*;
 import static org.chiu.micro.auth.lang.ExceptionMessage.*;
@@ -51,9 +50,9 @@ public class SecurityAuthenticationUtils {
         String userId = claims.getUserId();
         List<String> roles = claims.getRoles();
 
-        String mark = redisTemplate.opsForValue().get(BLOCK_USER.getInfo() + userId);
+        boolean mark = redisTemplate.hasKey(BLOCK_USER.getInfo() + userId);
 
-        if (StringUtils.hasLength(mark)) {
+        if (mark) {
             throw new AuthException(RE_LOGIN.getMsg());
         }
 
