@@ -24,7 +24,7 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
 
         hints.serialization().registerType(LoginSuccessVo.class);
         hints.serialization().registerType(UserInfoVo.class);
-        hints.serialization().registerType(SensitiveContentReq.class);
+        // hints.serialization().registerType(SensitiveContentReq.class);
         hints.serialization().registerType(SensitiveContentVo.class);
 
         // Register resources
