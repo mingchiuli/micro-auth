@@ -3,11 +3,10 @@ package org.chiu.micro.auth.req;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 
 @Data
 @Builder
-public class SensitiveContentReq implements Serializable {
+public class SensitiveContentReq {
 
     private Integer startIndex;
 
