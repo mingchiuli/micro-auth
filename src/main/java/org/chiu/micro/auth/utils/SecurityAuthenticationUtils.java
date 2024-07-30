@@ -29,19 +29,37 @@ public class SecurityAuthenticationUtils {
 
     private final StringRedisTemplate redisTemplate;
 
-    private Authentication getAuthentication(List<String> roles, String userId) {
-        List<String> rawRoles = new ArrayList<>();
-        roles.forEach(role -> rawRoles.add(role.substring(ROLE_PREFIX.getInfo().length())));
-        List<String> authorities = userHttpServiceWrapper.getAuthoritiesByRoleCodes(rawRoles);
+    private Authentication getAuthentication(List<String> roles, String userId) throws AuthException {
+        List<String> rawRoles = getRawRoleCodes(roles);
+        List<String> authorities = getAuthorities(Long.valueOf(userId), rawRoles);
         PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(userId, null, AuthorityUtils.createAuthorityList(authorities));
         authenticationToken.setDetails(rawRoles);
 
         return authenticationToken;
     }
 
-     public Authentication getAuthentication(String token) throws AuthException {
-        AuthDto authDto = getAuthDto(token);
-        return getAuthentication(authDto.getAuthorities(), authDto.getUserId());
+    private List<String> getRawRoleCodes(List<String> roles) {
+        List<String> rawRoles = new ArrayList<>();
+        roles.forEach(role -> rawRoles.add(role.substring(ROLE_PREFIX.getInfo().length())));
+        return rawRoles;
+    }
+
+    public Authentication getAuthentication(String token) throws AuthException {
+        String jwt = token.substring(TOKEN_PREFIX.getInfo().length());
+        Claims claims = tokenUtils.getVerifierByToken(jwt);
+        String userId = claims.getUserId();
+        List<String> roles = claims.getRoles();
+        return getAuthentication(roles, userId);
+    }
+
+
+    private List<String> getAuthorities(Long userId, List<String> rawRoles) throws AuthException {
+        boolean mark = redisTemplate.hasKey(BLOCK_USER.getInfo() + userId);
+
+        if (mark) {
+            throw new AuthException(RE_LOGIN.getMsg());
+        }
+        return userHttpServiceWrapper.getAuthoritiesByRoleCodes(rawRoles);
     }
 
     public AuthDto getAuthDto(String token) throws AuthException {
@@ -49,16 +67,12 @@ public class SecurityAuthenticationUtils {
         Claims claims = tokenUtils.getVerifierByToken(jwt);
         String userId = claims.getUserId();
         List<String> roles = claims.getRoles();
-
-        boolean mark = redisTemplate.hasKey(BLOCK_USER.getInfo() + userId);
-
-        if (mark) {
-            throw new AuthException(RE_LOGIN.getMsg());
-        }
-
+        List<String> rawRoles = getRawRoleCodes(roles);
+        List<String> authorities = getAuthorities(Long.valueOf(userId), rawRoles);
+        
         return AuthDto.builder()
                 .userId(userId)
-                .authorities(roles)
+                .authorities(authorities)
                 .build();
         
     }
