@@ -32,7 +32,6 @@ public class SecurityConfig {
             "/code/**",
             "/public/blog/**",
             "/search/public/**",
-            "/edit/ws/**",
             "/actuator/**",
             "/sys/user/register/**",
             "/inner/auth/*"
