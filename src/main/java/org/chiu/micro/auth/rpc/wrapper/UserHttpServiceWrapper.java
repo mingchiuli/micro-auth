@@ -72,8 +72,8 @@ public class UserHttpServiceWrapper {
         return result.getData();
     }
 
-    public List<String> getAuthoritiesByRoleCodes(String rawRole) {
-        Result<List<String>> result = userHttpService.getAuthoritiesByRoleCodes(rawRole);
+    public List<String> getAuthoritiesByRoleCode(String rawRole) {
+        Result<List<String>> result = userHttpService.getAuthoritiesByRoleCode(rawRole);
         if (result.getCode() != 200) {
             throw new MissException(result.getMsg());
         }

@@ -25,8 +25,8 @@ public class AuthWrapper {
 	}
 
 	@Cache(prefix = Const.HOT_AUTHORITIES)
-	public List<String> getAuthoritiesByRoleCodes(String rawRole) {
-		return userHttpServiceWrapper.getAuthoritiesByRoleCodes(rawRole);
+	public List<String> getAuthoritiesByRoleCode(String rawRole) {
+		return userHttpServiceWrapper.getAuthoritiesByRoleCode(rawRole);
 	}
 
 }

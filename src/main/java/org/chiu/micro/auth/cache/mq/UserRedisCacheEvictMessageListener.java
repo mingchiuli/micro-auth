@@ -51,7 +51,7 @@ public class UserRedisCacheEvictMessageListener {
         }
 
         if (AuthMenuOperateEnum.AUTH.equals(operateEnum) || AuthMenuOperateEnum.AUTH_AND_MENU.equals(operateEnum)) {
-            Method method = AuthWrapper.class.getMethod("getAuthoritiesByRoleCodes", List.class);
+            Method method = AuthWrapper.class.getMethod("getAuthoritiesByRoleCode", List.class);
             roles.forEach(role -> keys.add(cacheKeyGenerator.generateKey(method, role)));
         }
 

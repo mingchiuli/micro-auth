@@ -38,7 +38,7 @@ public interface UserHttpService {
     Result<UserEntityDto> findByUsernameOrEmailOrPhone(@PathVariable(value = "username") String username);
 
     @PostExchange("/user/role/authority")
-    Result<List<String>> getAuthoritiesByRoleCodes(@RequestBody String rawRole);
+    Result<List<String>> getAuthoritiesByRoleCode(@RequestBody String rawRole);
 
     @PostExchange("/menu/nav")
     Result<MenusAndButtonsRpcDto> getCurrentUserNav(@RequestBody String role);

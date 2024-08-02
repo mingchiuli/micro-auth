@@ -60,7 +60,7 @@ public class SecurityAuthenticationUtils {
         }
 
         List<String> roles = new ArrayList<>();
-        rawRoles.forEach(role ->  roles.addAll(authWrapper.getAuthoritiesByRoleCodes(role)));
+        rawRoles.forEach(role ->  roles.addAll(authWrapper.getAuthoritiesByRoleCode(role)));
         return rawRoles.stream()
                 .distinct()
                 .toList();
