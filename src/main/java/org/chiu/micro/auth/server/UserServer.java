@@ -13,7 +13,6 @@ import org.chiu.micro.auth.req.UserEntityReq;
 import org.chiu.micro.auth.vo.AuthorityVo;
 import org.chiu.micro.auth.vo.MenuDisplayVo;
 import org.chiu.micro.auth.vo.MenuEntityVo;
-import org.chiu.micro.auth.vo.MenusAndButtonsVo;
 import org.chiu.micro.auth.vo.RoleAuthorityVo;
 import org.chiu.micro.auth.vo.RoleEntityVo;
 import org.chiu.micro.auth.vo.RoleMenuVo;
@@ -40,9 +39,6 @@ public interface UserServer {
 
     @GetExchange("/authority/download")
     byte[] downloadAuthorities();
-
-    @PostExchange("/menu/nav")
-    Result<MenusAndButtonsVo> getCurrentUserNav(@RequestBody List<String> roles);
 
     @GetExchange("/menu/info/{id}")
     Result<MenuEntityVo> findByMenuId(@PathVariable Long id);

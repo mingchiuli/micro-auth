@@ -3,13 +3,12 @@ package org.chiu.micro.auth.vo;
 import lombok.Builder;
 import lombok.Data;
 
-/**
- * @Author limingjiu
- * @Date 2024/4/20 18:17
- **/
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
-public class ButtonVo {
+public class MenuWithChildVo {
 
     private Long menuId;
 
@@ -31,4 +30,6 @@ public class ButtonVo {
 
     private Integer status;
 
+    @Builder.Default
+    private List<MenuWithChildVo> children = new ArrayList<>();
 }

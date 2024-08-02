@@ -11,11 +11,9 @@ import org.chiu.micro.auth.req.RoleEntityReq;
 import org.chiu.micro.auth.req.UserEntityRegisterReq;
 import org.chiu.micro.auth.req.UserEntityReq;
 import org.chiu.micro.auth.server.UserServer;
-import org.chiu.micro.auth.utils.SecurityUtils;
 import org.chiu.micro.auth.vo.AuthorityVo;
 import org.chiu.micro.auth.vo.MenuDisplayVo;
 import org.chiu.micro.auth.vo.MenuEntityVo;
-import org.chiu.micro.auth.vo.MenusAndButtonsVo;
 import org.chiu.micro.auth.vo.RoleAuthorityVo;
 import org.chiu.micro.auth.vo.RoleEntityVo;
 import org.chiu.micro.auth.vo.RoleMenuVo;
@@ -52,7 +50,6 @@ public class UserServerWrapper {
         return userServer.findAllAuthority();
     }
 
-
     @GetMapping("/authority/info/{id}")
     @PreAuthorize("hasAuthority('sys:authority:info')")
     public Result<AuthorityVo> findByAuthorityId(@PathVariable(value = "id") Long id) {
@@ -80,13 +77,6 @@ public class UserServerWrapper {
         outputStream.write(data);
         outputStream.flush();
         outputStream.close();
-    }
-
-    @GetMapping("/menu/nav")
-    @PreAuthorize("hasAuthority('sys:menu:nav')")
-    public Result<MenusAndButtonsVo> nav() {
-        List<String> roles = SecurityUtils.getLoginRole();
-        return userServer.getCurrentUserNav(roles);
     }
 
     @GetMapping("/menu/info/{id}")
@@ -204,7 +194,6 @@ public class UserServerWrapper {
     public Result<Boolean> checkRegisterPage(@RequestParam String token) {
         return userServer.checkRegisterPage(token);
     }
-
 
     @PostMapping("/user/register/save")
     public Result<Void> saveRegisterPage(@RequestParam String token,

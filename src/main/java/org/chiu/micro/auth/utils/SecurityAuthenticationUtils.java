@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.chiu.micro.auth.dto.AuthDto;
 import org.chiu.micro.auth.exception.AuthException;
-import org.chiu.micro.auth.rpc.wrapper.UserHttpServiceWrapper;
 import org.chiu.micro.auth.token.Claims;
 import org.chiu.micro.auth.token.TokenUtils;
+import org.chiu.micro.auth.wrapper.AuthWrapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityAuthenticationUtils {
 
-    private final UserHttpServiceWrapper userHttpServiceWrapper;
+    private final AuthWrapper authWrapper;
 
     private final TokenUtils<Claims> tokenUtils;
 
@@ -52,14 +52,18 @@ public class SecurityAuthenticationUtils {
         return getAuthentication(roles, userId);
     }
 
-
     private List<String> getAuthorities(Long userId, List<String> rawRoles) throws AuthException {
         boolean mark = redisTemplate.hasKey(BLOCK_USER.getInfo() + userId);
 
         if (mark) {
             throw new AuthException(RE_LOGIN.getMsg());
         }
-        return userHttpServiceWrapper.getAuthoritiesByRoleCodes(rawRoles);
+
+        List<String> roles = new ArrayList<>();
+        rawRoles.forEach(role ->  roles.addAll(authWrapper.getAuthoritiesByRoleCodes(role)));
+        return rawRoles.stream()
+                .distinct()
+                .toList();
     }
 
     public AuthDto getAuthDto(String token) throws AuthException {

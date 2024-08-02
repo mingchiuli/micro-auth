@@ -2,6 +2,7 @@ package org.chiu.micro.auth.rpc.wrapper;
 
 import java.util.List;
 
+import org.chiu.micro.auth.dto.MenusAndButtonsRpcDto;
 import org.chiu.micro.auth.dto.RoleEntityDto;
 import org.chiu.micro.auth.dto.UserEntityDto;
 import org.chiu.micro.auth.exception.MissException;
@@ -71,8 +72,16 @@ public class UserHttpServiceWrapper {
         return result.getData();
     }
 
-    public List<String> getAuthoritiesByRoleCodes(List<String> rawRoles) {
-        Result<List<String>> result = userHttpService.getAuthoritiesByRoleCodes(rawRoles);
+    public List<String> getAuthoritiesByRoleCodes(String rawRole) {
+        Result<List<String>> result = userHttpService.getAuthoritiesByRoleCodes(rawRole);
+        if (result.getCode() != 200) {
+            throw new MissException(result.getMsg());
+        }
+        return result.getData();
+    }
+
+    public MenusAndButtonsRpcDto getCurrentUserNav(String rawRole) {
+        Result<MenusAndButtonsRpcDto> result = userHttpService.getCurrentUserNav(rawRole);
         if (result.getCode() != 200) {
             throw new MissException(result.getMsg());
         }

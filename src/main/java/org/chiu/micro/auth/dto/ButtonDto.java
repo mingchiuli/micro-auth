@@ -1,15 +1,18 @@
-package org.chiu.micro.auth.vo;
+package org.chiu.micro.auth.dto;
 
 import lombok.Builder;
 import lombok.Data;
+
+import java.io.Serializable;
+
 
 /**
  * @Author limingjiu
  * @Date 2024/4/20 18:17
  **/
-@Data
 @Builder
-public class ButtonVo {
+@Data
+public class ButtonDto implements Serializable {
 
     private Long menuId;
 

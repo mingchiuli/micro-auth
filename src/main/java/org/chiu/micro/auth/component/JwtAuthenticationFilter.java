@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        // 非白名单资源、接口都要走这个流程，没有set就不能访问
+        // 非白名单资源、接口都要走这个流程 没有set就不能访问
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }

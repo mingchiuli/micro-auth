@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.RequiredArgsConstructor;
 
-import org.chiu.micro.auth.code.CodeFactory;
 import org.chiu.micro.auth.exception.CodeException;
 import org.chiu.micro.auth.lang.Const;
 import org.chiu.micro.auth.rpc.SmsHttpService;
 import org.chiu.micro.auth.rpc.wrapper.UserHttpServiceWrapper;
 import org.chiu.micro.auth.service.CodeService;
+import org.chiu.micro.auth.utils.CodeFactory;
 import org.chiu.micro.auth.utils.SmsUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;

@@ -38,7 +38,11 @@ public enum Const {
 
     ROLE_PREFIX("ROLE_"),
     
-    BLOCK_USER("block_user:");
+    BLOCK_USER("block_user:"),
+    
+    HOT_AUTHORITIES("hot_authorities"),
+
+    HOT_MENUS_AND_BUTTONS("hot_menus_and_buttons"),;
 
 
 

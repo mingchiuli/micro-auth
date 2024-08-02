@@ -1,4 +1,4 @@
-package org.chiu.micro.auth.code;
+package org.chiu.micro.auth.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

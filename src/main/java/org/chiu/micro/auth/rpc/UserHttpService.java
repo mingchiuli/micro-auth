@@ -2,6 +2,7 @@ package org.chiu.micro.auth.rpc;
 
 import java.util.List;
 
+import org.chiu.micro.auth.dto.MenusAndButtonsRpcDto;
 import org.chiu.micro.auth.dto.RoleEntityDto;
 import org.chiu.micro.auth.dto.UserEntityDto;
 import org.chiu.micro.auth.lang.Result;
@@ -37,6 +38,9 @@ public interface UserHttpService {
     Result<UserEntityDto> findByUsernameOrEmailOrPhone(@PathVariable(value = "username") String username);
 
     @PostExchange("/user/role/authority")
-    Result<List<String>> getAuthoritiesByRoleCodes(@RequestBody List<String> rawRoles);
+    Result<List<String>> getAuthoritiesByRoleCodes(@RequestBody String rawRole);
+
+    @PostExchange("/menu/nav")
+    Result<MenusAndButtonsRpcDto> getCurrentUserNav(@RequestBody String role);
   
 }
