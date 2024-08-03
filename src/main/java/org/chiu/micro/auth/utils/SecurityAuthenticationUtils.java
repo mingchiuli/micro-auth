@@ -59,9 +59,9 @@ public class SecurityAuthenticationUtils {
             throw new AuthException(RE_LOGIN.getMsg());
         }
 
-        List<String> roles = new ArrayList<>();
-        rawRoles.forEach(role ->  roles.addAll(authWrapper.getAuthoritiesByRoleCode(role)));
-        return rawRoles.stream()
+        List<String> authorities = new ArrayList<>();
+        rawRoles.forEach(role ->  authorities.addAll(authWrapper.getAuthoritiesByRoleCode(role)));
+        return authorities.stream()
                 .distinct()
                 .toList();
     }
