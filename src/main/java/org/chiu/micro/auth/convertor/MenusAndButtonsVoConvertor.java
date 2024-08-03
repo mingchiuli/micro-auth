@@ -12,24 +12,25 @@ import java.util.ArrayList;
 
 public class MenusAndButtonsVoConvertor {
 
-    private MenusAndButtonsVoConvertor() {}
+	private MenusAndButtonsVoConvertor() {
+	}
 
-    public static MenusAndButtonsVo convert(MenusAndButtonsDto dto) {
-        List<ButtonDto> buttons = dto.getButtons();
-        List<MenuWithChildDto> menus = dto.getMenus();
+	public static MenusAndButtonsVo convert(MenusAndButtonsDto dto) {
+		List<ButtonDto> buttons = dto.getButtons();
+		List<MenuWithChildDto> menus = dto.getMenus();
 
-        buttons = buttons.stream()
-                .distinct()
-                .toList();
+		buttons = buttons.stream()
+				.distinct()
+				.toList();
 
-        menus = menus.stream()
-                .distinct()
-                .toList();
+		menus = menus.stream()
+				.distinct()
+				.toList();
 
-        List<ButtonVo> buttonVos = new ArrayList<>();
+		List<ButtonVo> buttonVos = new ArrayList<>();
 		List<MenuWithChildVo> menuVos = new ArrayList<>();
 
-        buttons.forEach(button -> buttonVos.add(ButtonVo.builder()
+		buttons.forEach(button -> buttonVos.add(ButtonVo.builder()
 				.menuId(button.getMenuId())
 				.parentId(button.getParentId())
 				.icon(button.getIcon())
@@ -60,6 +61,6 @@ public class MenusAndButtonsVoConvertor {
 				.buttons(buttonVos)
 				.menus(menuVos)
 				.build();
-    }
+	}
 
 }
