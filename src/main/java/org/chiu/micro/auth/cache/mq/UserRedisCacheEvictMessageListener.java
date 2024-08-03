@@ -46,12 +46,12 @@ public class UserRedisCacheEvictMessageListener {
         List<String> roles = message.getRoles();
         Set<String> keys = new HashSet<>();
         if (AuthMenuOperateEnum.MENU.equals(operateEnum) || AuthMenuOperateEnum.AUTH_AND_MENU.equals(operateEnum)) {
-            Method method = AuthWrapper.class.getMethod("getCurrentUserNav", List.class);
+            Method method = AuthWrapper.class.getMethod("getCurrentUserNav", String.class);
             roles.forEach(role -> keys.add(cacheKeyGenerator.generateKey(method, role)));
         }
 
         if (AuthMenuOperateEnum.AUTH.equals(operateEnum) || AuthMenuOperateEnum.AUTH_AND_MENU.equals(operateEnum)) {
-            Method method = AuthWrapper.class.getMethod("getAuthoritiesByRoleCode", List.class);
+            Method method = AuthWrapper.class.getMethod("getAuthoritiesByRoleCode", String.class);
             roles.forEach(role -> keys.add(cacheKeyGenerator.generateKey(method, role)));
         }
 
