@@ -6,7 +6,6 @@ import lombok.SneakyThrows;
 
 import org.chiu.micro.auth.cache.config.CacheKeyGenerator;
 import org.chiu.micro.auth.config.CacheUserEvictRabbitConfig;
-import org.chiu.micro.auth.config.EvictCacheRabbitConfig;
 import org.chiu.micro.auth.constant.UserAuthMenuOperateMessage;
 import org.chiu.micro.auth.lang.AuthMenuOperateEnum;
 import org.chiu.micro.auth.wrapper.AuthWrapper;
@@ -36,7 +35,9 @@ public class UserRedisCacheEvictMessageListener {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @RabbitListener(queues = EvictCacheRabbitConfig.CACHE_USER_EVICT_QUEUE,
+    private static final String QUEUE = "user.auth.menu.change.queue.auth";
+
+    @RabbitListener(queues = QUEUE,
                     concurrency = "10",
                     messageConverter = "jsonMessageConverter",
                     executor = "mqExecutor")
