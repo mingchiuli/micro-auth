@@ -19,13 +19,13 @@ import java.nio.charset.StandardCharsets;
 @Component
 @RequiredArgsConstructor
 public class LoginFailureHandler implements AuthenticationFailureHandler {
-    
+
 	private final ObjectMapper objectMapper;
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		ServletOutputStream outputStream = response.getOutputStream();
 		Result<Void> result = Result.fail(exception.getMessage());
 		outputStream.write(
