@@ -73,6 +73,8 @@ public class UserServerWrapper {
     @PreAuthorize("hasAuthority('sys:authority:download')")
     public void downloadAuthorities(HttpServletResponse response) {
         byte[] data = userServer.downloadAuthorities();
+        response.setContentLength(data.length);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
@@ -107,9 +109,10 @@ public class UserServerWrapper {
     @PreAuthorize("hasAuthority('sys:menu:download')")
     @SneakyThrows
     public void downloadMenu(HttpServletResponse response) {
-        ServletOutputStream outputStream = response.getOutputStream();
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         byte[] data = userServer.downloadMenu();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentLength(data.length);
+        ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
         outputStream.close();
@@ -246,9 +249,10 @@ public class UserServerWrapper {
     @PreAuthorize("hasAuthority('sys:user:download')")
     @SneakyThrows
     public void downloadUser(HttpServletResponse response) {
-        ServletOutputStream outputStream = response.getOutputStream();
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         byte[] data = userServer.downloadUser();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentLength(data.length);
+        ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
         outputStream.close();

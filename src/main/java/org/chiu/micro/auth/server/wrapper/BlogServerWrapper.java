@@ -105,9 +105,10 @@ public class BlogServerWrapper {
     @PreAuthorize("hasAuthority('sys:blog:download')")
     @SneakyThrows
     public void download(HttpServletResponse response) {
-        ServletOutputStream outputStream = response.getOutputStream();
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         byte[] data = blogServer.download();
+        response.setContentLength(data.length);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
         outputStream.close();
