@@ -18,6 +18,7 @@ import org.chiu.micro.auth.vo.RoleAuthorityVo;
 import org.chiu.micro.auth.vo.RoleEntityVo;
 import org.chiu.micro.auth.vo.RoleMenuVo;
 import org.chiu.micro.auth.vo.UserEntityVo;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,6 +74,7 @@ public class UserServerWrapper {
     @PreAuthorize("hasAuthority('sys:authority:download')")
     public void downloadAuthorities(HttpServletResponse response) {
         byte[] data = userServer.downloadAuthorities();
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         response.setContentLength(data.length);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         ServletOutputStream outputStream = response.getOutputStream();
@@ -111,6 +113,7 @@ public class UserServerWrapper {
     public void downloadMenu(HttpServletResponse response) {
         byte[] data = userServer.downloadMenu();
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         response.setContentLength(data.length);
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
@@ -176,6 +179,7 @@ public class UserServerWrapper {
         byte[] data = userServer.downloadRole();
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentLength(data.length);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
@@ -252,6 +256,7 @@ public class UserServerWrapper {
     public void downloadUser(HttpServletResponse response) {
         byte[] data = userServer.downloadUser();
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         response.setContentLength(data.length);
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
