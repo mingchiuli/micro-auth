@@ -15,6 +15,7 @@ import org.chiu.micro.auth.utils.SecurityUtils;
 import org.chiu.micro.auth.vo.BlogDeleteVo;
 import org.chiu.micro.auth.vo.BlogEditVo;
 import org.chiu.micro.auth.vo.BlogEntityVo;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -108,6 +109,7 @@ public class BlogServerWrapper {
         byte[] data = blogServer.download();
         response.setContentLength(data.length);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
