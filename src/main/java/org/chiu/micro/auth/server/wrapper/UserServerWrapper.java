@@ -173,9 +173,10 @@ public class UserServerWrapper {
     @PreAuthorize("hasAuthority('sys:role:download')")
     @SneakyThrows
     public void downloadRole(HttpServletResponse response) {
-        ServletOutputStream outputStream = response.getOutputStream();
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         byte[] data = userServer.downloadRole();
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentLength(data.length);
+        ServletOutputStream outputStream = response.getOutputStream();
         outputStream.write(data);
         outputStream.flush();
         outputStream.close();
